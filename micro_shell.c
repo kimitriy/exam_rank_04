@@ -16,9 +16,10 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
 void exit_fatal (void)
 {
-	write (2, "error: fatal\n", 14);
+	write (2, "error: fatal\n", 13);
 	exit (1);
 }
 int	ft_strlen(char *s)
