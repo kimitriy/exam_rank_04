@@ -53,7 +53,7 @@ int	ft_linelen(char **s)
 		len++;
 	return (len);
 }
-​
+
 int main(int argc, char **argv, char **env)
 {
 	int i = 1;
