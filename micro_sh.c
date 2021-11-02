@@ -12,12 +12,12 @@ int		ft_strlen(char *str)
 	return (i);
 }
 
-void	err_message(char *err1, char *err2)
+void	err_message(char *msg1, char *msg2)
 {
 	write(STDERR, "error: ", 7);
-	write(STDERR, err1, ft_strlen(err1));
-	if (err2)
-		write(STDERR, err2, ft_strlen(err2));
+	write(STDERR, msg1, ft_strlen(msg1));
+	if (msg2)
+		write(STDERR, msg2, ft_strlen(msg2));
 	write(STDERR, "\n", 1);
 	exit(EXIT_FAILURE);
 }
