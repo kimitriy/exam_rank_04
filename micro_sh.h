@@ -22,8 +22,8 @@ typedef struct		s_base
 	int				size;
 	int				type;
 	int				fd[2];
-	struct s_base	*prv;
 	struct s_base	*nxt;
+	struct s_base	*prv;
 }					t_base;
 
 #endif

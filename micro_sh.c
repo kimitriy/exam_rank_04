@@ -19,7 +19,8 @@ void	err_message(char *msg1, char *msg2)
 	if (msg2)
 		write(STDERR, msg2, ft_strlen(msg2));
 	write(STDERR, "\n", 1);
-	exit(EXIT_FAILURE);
+	if (strcmp(msg1, "fatal") == 0)
+		exit(EXIT_FAILURE);
 }
 
 void	*ft_malloc(size_t count, size_t size)
@@ -33,12 +34,11 @@ void	*ft_malloc(size_t count, size_t size)
 
 char	*ft_strdup(char *str)
 {
-	int		i;
 	char	*ptr;
+	int		i = -1;
 	if (!str)
 		return (NULL);
 	ptr = (char *)ft_malloc(ft_strlen(str) + 1, sizeof(char));
-	i = -1;
 	while (str[++i])
 		ptr[i] = str[i];
 	ptr[i] = '\0';
@@ -62,8 +62,8 @@ void	ft_lst_add_back(t_base **lst, t_base *new)
 		while (tmp->nxt)
 			tmp = tmp->nxt;
 		tmp->nxt = new;
-		new->nxt = NULL;
 		new->prv = tmp;
+		new->nxt = NULL;
 	}
 }
 
@@ -77,7 +77,7 @@ int		size_argv(char **av)
 	return (i);
 }
 
-int		check_end(char *str)
+int		check_type(char *str)
 {
 	if (!str)
 		return (TYPE_END);
@@ -88,18 +88,18 @@ int		check_end(char *str)
 	return (0);
 }
 
-int		parse_argv(t_base **ptr, char **av)
+int		parse_argv(t_base **ptr, char **arr)
 {
 	t_base	*new;
-	int		size = size_argv(av);
+	int		size = size_argv(arr);
 	int		i = -1;
 	new = (t_base *)ft_malloc(1, sizeof(t_base));
 	new->cmnds = (char **)ft_malloc(size + 1, sizeof(char *));
 	while (++i < size)
-		new->cmnds[i] = ft_strdup(av[i]);
+		new->cmnds[i] = ft_strdup(arr[i]);
 	new->cmnds[size] = NULL;
 	new->size = size;
-	new->type = check_end(av[size]);
+	new->type = check_type(arr[size]);
 	new->prv = NULL;
 	new->nxt = NULL;
 	ft_lst_add_back(ptr, new);
@@ -152,7 +152,7 @@ void	execute(t_base *ptr, char **env)
 	{
 		if (strcmp(ptr->cmnds[0], "cd") == 0)
 		{
-			if (ptr->size < 2)
+			if (ptr->size < 2) //or ptr->size != 2
 				err_message("cd: bad arguments ", NULL);
 			else if (chdir(ptr->cmnds[1]) < 0)
 				err_message("cd: cannot change directory to ", ptr->cmnds[1]);
